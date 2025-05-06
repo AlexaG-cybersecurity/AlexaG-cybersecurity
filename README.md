@@ -195,6 +195,65 @@ public class LibraryApp {
     }
 
     private static void handleUsersAdd(String input) {
+        if (!userManager.isLoggedIn() || !userManager.isAdmin()) {  // <-- ПРОМЕНЕНО
+            System.out.println("Admin access required.");
+            return;
+        }
+        String[] parts = input.split(" ");
+        if (parts.length < 4) {
+            System.out.println("Usage: users add <username> <password>");
+            return;
+        }
+        userManager.addUser(parts[2], parts[3]);
+    }
+
+    private static void handleUsersRemove(String input) {
+        if (!userManager.isLoggedIn() || !userManager.isAdmin()) {  // <-- ПРОМЕНЕНО
+            System.out.println("Admin access required.");
+            return;
+        }
+        String[] parts = input.split(" ");
+        if (parts.length < 3) {
+            System.out.println("Usage: users remove <username>");
+            return;
+        }
+        userManager.removeUser(parts[2]);
+    }
+
+    private static void exit() {
+        System.out.println("Exiting program...");
+        System.exit(0);
+    }
+}
+
+        }
+        String[] parts = input.split(" ", 4);
+        if (parts.length < 4) {
+            System.out.println("Usage: books find <option> <option_string>");
+            return;
+        }
+        library.findBooks(parts[2], parts[3]);
+    }
+
+    private static void handleBooksSort(String input) {
+        if (!userManager.isLoggedIn()) {
+            System.out.println("Please log in first.");
+            return;
+        }
+        String[] parts = input.split(" ");
+        if (parts.length < 3) {
+            System.out.println("Usage: books sort <option> [asc|desc]");
+            return;
+        }
+        String option = parts[2];
+        boolean ascending = true;
+        if (parts.length == 4) {
+            ascending = !parts[3].equalsIgnoreCase("desc");
+        }
+        library.sortBooks(option, ascending);
+    }
+
+    private static void handleUsersAdd(String input) {
         if (!userManager.isLoggedIn() || userManager.isAdmin()) {
             System.out.println("Admin access required.");
             return;
